@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/base_styles.css' %}">
+    <link rel="shortcut icon" href="#" />
+</head>
+<body>
+    <header id="header">
+        <nav>
+            <div class="z-flex-container">
+                <div><a href="{% url 'home:home' %}">شبکه اجتماعی</a></div>
+                {% if request.user.is_authenticated %}
+                <div><a href="{% url 'account:user_profile' request.user.id %}">حساب کاربر</a></div>
+                <div><a href="{% url 'account:user_logout' %}">خروج</a></div>
+                {% else %}
+                <div><a href="{% url 'account:user_register' %}">ثبت نام</a></div>
+                <div><a href="{% url 'account:user_login' %}">ورود</a></div>
+                {% endif %}
+
+            </div>
+
+        </nav>
+        <div class="z-pages">
+            <div class="z-flex-container">
+                <div class="z-profile">
+                    <a href="#">
+                        <span class="material-symbols-outlined">
+                            account_circle
+                        </span>
+                    </a>
+                </div>
+                <div class="z-explore-video">
+                    <a href="#">
+                        <span class="material-symbols-outlined">
+                            play_circle
+                        </span>
+                    </a>
+                </div>
+                <div class="z-explore-picture">
+                    <a href="#">
+                        <span class="material-symbols-outlined">
+                            image
+                        </span>
+                    </a>
+                </div>
+                <div class="z-explore-text">
+                    <a href="#">
+                        <span class="material-symbols-outlined">
+                            description
+                        </span>
+                    </a>
+                </div>
+                <div class="z-home">
+                    <a href="#">
+                        <span class="material-symbols-outlined">
+                            home
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% block account-detail %}{% endblock %}
+
+    </header>
+    <main>
+        <div class="z-container">
+            {% include 'inc/messages.html' %}
+            <div>
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+        <div class="z-fix"><a href="#header">
+            <span class="material-symbols-outlined">
+                expand_circle_up
+            </span>
+        </a></div>
+    </main>
+
+    <footer></footer>
+</body>
+</html>

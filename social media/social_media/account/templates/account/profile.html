@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block account-detail %}
+        <div class="z-flex-container z-account">
+            {% if request.user == user %}
+            <div class="z-account-burger">
+                <a href="{% url 'account:setting' %}">
+                    <span class="material-symbols-outlined">
+                        menu
+                    </span>
+                </a>
+            </div>
+            {% endif %}
+            <div class="z-account-pic"></div>
+            <div class="z-account-username">{{user.username}}</div>
+            <div class="z-account-followers"></div>
+            <div class="z-account-following"></div>
+            {% if request.user.id == user.id %}
+            <div><a class="btn btn-success" href="{% url 'posts:post_create' %}">پست جدید</a></div>
+            {% elif request.user.id != user.id and not is_following  %}
+            <div><a class="btn btn-info" href="{% url 'account:user_follow' user.id %}">دنبال کردن</a></div>
+            {% else %}
+            <div><a class="btn btn-warning" href="{% url 'account:user_unfollow' user.id %}">دنبال نکردن</a></div>
+            {% endif %}
+
+
+
+        </div>
+
+{% endblock %}
+
+{% block content %}
+<div class="z-container-content">
+    {% for post in posts %}
+        <div>
+        <h3><a href="">{{posts.user.username}}</a></h3>
+        <h4><a href="{% url 'posts:post_detail' post.id %}">{{post.title}}</a></h4>
+        <p>{{post.body}}</p>
+        <small>{{post.created}}</small>
+        <small>{{post.updated}}</small><br>
+        {% if request.user.id == post.user.id %}
+            <a href="{% url 'posts:post_delete' post.id %}" class="btn btn-danger">Delete</a>
+            <a href="{% url 'posts:post_update' post.id %}" class="btn btn-info">Update</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

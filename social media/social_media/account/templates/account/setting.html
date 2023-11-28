@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block account-detail %}
+        <div class="z-flex-container z-account">
+            <div class="z-account-pic"></div>
+            <div class="z-account-username">{{request.user.username}}</div>
+            <div class="z-account-followers"></div>
+            <div class="z-account-following"></div>
+        </div>
+
+{% endblock %}
+
+{% block content %}
+<div class="z-container-content">
+    <div>
+        <a class="btn btn-warning text-white" href="{% url 'account:reset_password' %}">تغییر رمز</a>
+        <br>
+        <form action="" method="post" novalidate>
+            {% csrf_token %}
+            {{ form.as_p}}
+            <input class="btn btn-secondary" type="submit" value="ذخیره">
+
+        </form>
+    </div>
+</div>
+{% endblock %}

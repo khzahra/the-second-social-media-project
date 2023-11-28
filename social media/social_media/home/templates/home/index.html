@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="z-container-content">
+    <form action="" method="get">
+        {{ form.as_p }}
+        <input type="submit", value="جست و جو">
+    </form>
+</div>
+<div class="z-container-content">
+    {% for post in posts %}
+    <div>
+        <h3><a href="{% url 'account:user_profile' post.user.id %}">"{{post.user.username}}"</a></h3>
+        <h4><a href="{{ post.get_absolute_url }}">{{post.title|truncatewords:20}}</a></h4>
+        <p>{{post.body|truncatewords:10}}</p>
+        <small>{{post.created|date:'M-d'}}</small>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

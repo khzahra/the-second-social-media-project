@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="z-container-content">
+    <div>
+        <h3><a href="{% url 'account:user_profile' post.user.id %}">{{post.user.username}}</a></h3>
+        <h4>{{post.title}}</h4>
+        <p>{{post.body}}</p>
+        <small>{{post.created}}</small>
+        <small>{{post.updated}}</small>
+        <br>
+        {% if request.user.is_authenticated %}
+        <div>
+            <a href="{% url 'posts:post_like' post.id %}" class="btn btn-success"> {{ post.likes_count }} پسندین</a>
+        </div>
+        {% endif %}
+        <hr>
+
+        {% for comment in comments %}
+        <div class="card bg-dark text_white">
+            <p class="card_header">{{ comment.user }} | {{ comment.created|timesince }}</p>
+            <p class="card_body">{{ comment.body }}</p>
+            {% with replies=comment.reply_comments.all %}
+            {% for reply in  replies %}
+            <p class="bg-secondary p-2 m-2 text-white">{{ reply.user }}<br>{{ reply.body }}</p>
+            {% endfor %}
+            {% endwith %}
+            {% if request.user.is_authenticated %}
+            <form action="{% url 'posts:add_reply' post.id comment.id %}" method="post" novalidate>
+                {% csrf_token %}
+                {{reply_form.as_p}}
+                <input type="submit" value="ارسال نظر">
+            </form>
+            {% endif %}
+        </div>
+        {% empty %}
+        <p class="card bg-dark text_white">پیامی وجود ندارد.</p>
+        {% endfor %}
+
+
+
+
+    </div>
+    <div>
+        {% if request.user.is_authenticated %}
+        <form action="" method="post" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="ارسال">
+        </form>
+        {% else %}
+        <p class="alert alert-danger">برای ارسال نظر، باید وارد حساب کاربری خود شوید.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
